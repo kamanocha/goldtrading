@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --yes)",
+      "Bash(export PATH=\"$PATH:/usr/local/bin:/opt/homebrew/bin:/usr/bin\")",
+      "Bash(echo $PATH)",
+      "Bash(command -v nvm)",
+      "Bash(brew list:*)",
+      "Bash(brew install:*)",
+      "Bash(/opt/homebrew/bin/npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --yes)",
+      "Bash(/opt/homebrew/bin/npx create-next-app@latest gold1-app --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --yes)",
+      "Bash(cp -r /Users/kashishmanoch/Documents/gold1-app/. /Users/kashishmanoch/Documents/gold1/)",
+      "Bash(rm -rf /Users/kashishmanoch/Documents/gold1-app)",
+      "Bash(/opt/homebrew/bin/npm install:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(xargs kill:*)"
+    ]
+  }
+}

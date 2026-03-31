@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* ── Gold / Amber palette ──────────────────────────────── */
+  --color-gold-50:  #FFFBEB;
+  --color-gold-100: #FEF3C7;
+  --color-gold-200: #FDE68A;
+  --color-gold-300: #FCD34D;
+  --color-gold-400: #FBBF24;
+  --color-gold-500: #F59E0B;
+  --color-gold-600: #D97706;
+  --color-gold-700: #B45309;
+  --color-gold-800: #92400E;
+  --color-gold-900: #78350F;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Layout ────────────────────────────────────────────── */
+  --max-width-mobile: 430px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ── Typography ────────────────────────────────────────── */
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* ── Custom animations ─────────────────────────────────── */
+  --animate-pulse-dot: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-fade-in:   fade-in   0.4s ease-out;
+  --animate-slide-up:  slide-up  0.3s ease-out;
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { transform: translateY(10px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Base ────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background-color: var(--color-gold-50);
+    color: var(--color-gold-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Remove number-input spinners */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] { -moz-appearance: textfield; }
+}
+
+/* ── Component helpers ───────────────────────────────────── */
+@layer components {
+  .gold-card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid var(--color-gold-100);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    padding: 1rem;
+  }
+
+  .gold-input {
+    background: transparent;
+    outline: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-gold-900);
+    width: 100%;
+  }
+  .gold-input::placeholder { color: var(--color-gold-300); }
+}
+
+/* ── Range / Slider ──────────────────────────────────────── */
+@layer utilities {
+  .gold-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 9999px;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .gold-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-gold-600);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px var(--color-gold-400), 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  .gold-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-gold-600);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px var(--color-gold-400), 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
 }

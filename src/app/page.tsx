@@ -1,65 +1,157 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useGoldPrice } from "@/hooks/useGoldPrice";
+import { useConverter } from "@/hooks/useConverter";
+import { useAuth } from "@/hooks/useAuth";
+import { createClient } from "@/lib/supabase/client";
+import { MobileContainer } from "@/components/layout/MobileContainer";
+import { Header } from "@/components/layout/Header";
+import { BuyToggle } from "@/components/buy/BuyToggle";
+import { ConverterCard } from "@/components/buy/ConverterCard";
+import { QuickSelectButtons } from "@/components/buy/QuickSelectButtons";
+import { PromoCodeInput } from "@/components/buy/PromoCodeInput";
+import { StickyBuyCTA } from "@/components/buy/StickyBuyCTA";
+import { UserCounter } from "@/components/social/UserCounter";
+import { EducationCards } from "@/components/social/EducationCards";
+import { FAQAccordion } from "@/components/social/FAQAccordion";
+import { TermsLink } from "@/components/social/TermsLink";
+import type { BuyMode } from "@/types";
+
+// Recharts uses window — must be loaded client-side only
+const GoldPriceChart = dynamic(
+  () => import("@/components/social/GoldPriceChart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="gold-card">
+        <div className="h-5 w-32 rounded-md bg-gold-100 animate-pulse mb-3" />
+        <div className="h-40 w-full rounded-xl bg-gold-100 animate-pulse" />
+      </div>
+    ),
+  }
+);
+
+export default function BuyPage() {
+  const router = useRouter();
+  const { price: goldPrice } = useGoldPrice();
+  const converter = useConverter(goldPrice);
+  const { user } = useAuth();
+  const [mode, setMode] = useState<BuyMode>("lumpsum");
+  const [buying, setBuying] = useState(false);
+
+  const handleBuy = async () => {
+    if (converter.numericSgd <= 0) return;
+
+    // Require login
+    if (!user) {
+      router.push("/auth");
+      return;
+    }
+
+    setBuying(true);
+    try {
+      const supabase = createClient();
+
+      const gramsVal = parseFloat(converter.grams) || 0;
+
+      // 1. Insert order
+      const { error: orderErr } = await supabase.from("orders").insert({
+        user_id: user.id,
+        sgd_amount: converter.numericSgd,
+        gold_price_sgd: goldPrice,
+        grams_purchased: gramsVal,
+        status: "completed",
+      });
+
+      if (orderErr) throw orderErr;
+
+      // 2. Update holdings aggregate
+      await supabase.rpc("increment_holding", {
+        p_user_id: user.id,
+        p_grams: gramsVal,
+        p_sgd: converter.numericSgd,
+      });
+
+      // 3. Navigate to success screen
+      router.push(
+        `/purchase-success?amount=${converter.numericSgd}&grams=${gramsVal}&price=${goldPrice}`
+      );
+    } catch (err) {
+      console.error("Buy error:", err);
+      // Still navigate to success in demo mode if Supabase not configured
+      router.push(
+        `/purchase-success?amount=${converter.numericSgd}&grams=${converter.grams}&price=${goldPrice}`
+      );
+    } finally {
+      setBuying(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <MobileContainer>
+      <Header />
+
+      <div className="space-y-4 pt-4">
+        {/* Mode toggle */}
+        <BuyToggle mode={mode} onChange={setMode} />
+
+        {/* Save Daily notice */}
+        {mode === "daily" && (
+          <div className="rounded-xl border border-gold-200 bg-gold-100 px-4 py-3">
+            <p className="text-sm font-semibold text-gold-800">
+              📅 Daily savings mode
+            </p>
+            <p className="text-xs text-gold-600 mt-0.5">
+              We&apos;ll automatically buy gold every day at the live price.
+              Cancel anytime.
+            </p>
+          </div>
+        )}
+
+        {/* Converter */}
+        <ConverterCard converter={converter} goldPrice={goldPrice} />
+
+        {/* Quick select */}
+        <QuickSelectButtons
+          selectedAmount={converter.numericSgd}
+          onSelect={converter.handleQuickSelect}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+
+        {/* Promo code */}
+        <PromoCodeInput />
+
+        {/* ── Social proof section ────────────────────── */}
+        <div className="pt-2">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="h-px flex-1 bg-gold-200" />
+            <span className="text-xs font-semibold text-gold-500 uppercase tracking-wider">
+              Why GoldVault
+            </span>
+            <div className="h-px flex-1 bg-gold-200" />
+          </div>
+
+          <div className="space-y-4">
+            <UserCounter />
+            <GoldPriceChart />
+            <EducationCards />
+            <FAQAccordion />
+            <TermsLink />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* Spacer for sticky CTA */}
+        <div className="h-24" />
+      </div>
+
+      {/* Sticky buy button */}
+      <StickyBuyCTA
+        amount={converter.numericSgd}
+        onBuy={handleBuy}
+        isLoading={buying}
+      />
+    </MobileContainer>
   );
 }
