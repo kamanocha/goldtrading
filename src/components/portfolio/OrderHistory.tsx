@@ -23,13 +23,10 @@ export function OrderHistory({ orders: initialOrders, isDemoSession }: OrderHist
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center">
         <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
           Recent orders
         </p>
-        <button className="text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors">
-          View all
-        </button>
       </div>
 
       {orders.length === 0 ? (

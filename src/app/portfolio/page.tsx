@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
 import { MobileContainer } from "@/components/layout/MobileContainer";
 import { TrustBanner } from "@/components/portfolio/TrustBanner";
 import { GoldHolding } from "@/components/portfolio/GoldHolding";
@@ -15,39 +13,8 @@ export const metadata = {
 };
 
 export default async function PortfolioPage() {
-  const cookieStore = await cookies();
-  const isDemoSession = cookieStore.get("gv_demo")?.value === "1";
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let holding = MOCK_HOLDING;
-  let orders: Order[] = MOCK_ORDERS as Order[];
-
-  // Only query Supabase when a real user is authenticated
-  if (user) {
-    try {
-      const { data: holdingData } = await supabase
-        .from("holdings")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
-
-      const { data: ordersData } = await supabase
-        .from("orders")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
-        .limit(20);
-
-      if (holdingData) holding = holdingData;
-      if (ordersData && ordersData.length > 0) orders = ordersData;
-    } catch {
-      // Supabase not configured — keep mock data
-    }
-  }
+  const holding = MOCK_HOLDING;
+  const orders: Order[] = MOCK_ORDERS as Order[];
 
   return (
     <MobileContainer>
@@ -58,13 +25,13 @@ export default async function PortfolioPage() {
           grams={holding.grams}
           totalInvested={holding.total_invested}
           currentPrice={GOLD_PRICE_VND}
-          userName={isDemoSession ? "Kashish" : undefined}
-          isDemoSession={isDemoSession}
+          userName="Kashish"
+          isDemoSession={true}
         />
 
         <ActionGrid />
 
-        <OrderHistory orders={orders} isDemoSession={isDemoSession} />
+        <OrderHistory orders={orders} isDemoSession={true} />
 
         <div className="pb-24" />
       </div>

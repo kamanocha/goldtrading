@@ -18,7 +18,7 @@ export function PromoCodeInput() {
       setMessage(VALID_PROMO_CODES[trimmed]);
     } else {
       setStatus("invalid");
-      setMessage("Invalid promo code. Try GOLD10.");
+      setMessage("Invalid promo code.");
     }
   };
 
@@ -40,7 +40,7 @@ export function PromoCodeInput() {
             if (status !== "idle") setStatus("idle");
           }}
           onKeyDown={(e) => e.key === "Enter" && handleApply()}
-          placeholder="Promo code (e.g. GOLD10)"
+          placeholder="Promo code"
           className="flex-1 bg-transparent text-sm text-gold-900 placeholder-gold-300 outline-none"
           maxLength={20}
         />
