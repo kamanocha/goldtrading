@@ -1,32 +1,69 @@
-import { formatSGD, formatGrams } from "@/lib/formatters";
+import { formatSGD, formatPercent } from "@/lib/formatters";
+import { calculateReturns } from "@/lib/goldPrice";
 
 interface GoldHoldingProps {
   grams: number;
-  currentValue: number;
+  totalInvested: number;
+  currentPrice: number;
+  userName?: string;
 }
 
-export function GoldHolding({ grams, currentValue }: GoldHoldingProps) {
+export function GoldHolding({
+  grams,
+  totalInvested,
+  currentPrice,
+  userName,
+}: GoldHoldingProps) {
+  const { currentValue, absoluteReturn, percentReturn } = calculateReturns(
+    grams,
+    totalInvested,
+    currentPrice
+  );
+  const isPositive = absoluteReturn >= 0;
+
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-gold-600 to-gold-800 p-5 text-white shadow-lg">
-      {/* Label */}
-      <div className="flex items-center gap-1.5 mb-3">
-        <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-        <p className="text-xs font-medium text-gold-200">Gold in your locker</p>
+    <div className="bg-white rounded-2xl shadow-sm p-6 space-y-4">
+      {/* Greeting */}
+      <div>
+        <p className="text-lg font-semibold text-gold-900">
+          Hello{userName ? ` ${userName}` : ""} 👋
+        </p>
+        <p className="text-sm text-gray-500 mt-0.5">Your gold in vault</p>
       </div>
 
       {/* Big gram number */}
-      <p className="text-5xl font-black tracking-tight leading-none">
-        {grams.toFixed(4)}
-        <span className="text-2xl font-bold text-gold-300 ml-1.5">g</span>
-      </p>
-      <p className="mt-1 text-base font-semibold text-gold-200">
-        {formatSGD(currentValue)}
-      </p>
+      <div>
+        <p className="text-4xl font-bold text-gold-900 tabular-nums">
+          {grams.toFixed(4)}
+          <span className="text-2xl font-semibold text-gold-600 ml-1">g</span>
+        </p>
+        <p className="text-sm text-gray-500 mt-1">
+          Value: {formatSGD(currentValue)}
+        </p>
+      </div>
 
-      {/* Purity badge */}
-      <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5">
-        <span className="text-xs font-bold text-white">24K · 999.9</span>
-        <span className="text-xs text-gold-200">Pure Gold</span>
+      {/* Divider */}
+      <div className="border-t border-gold-100" />
+
+      {/* Invested vs Returns */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <p className="text-xs text-gray-400 mb-1">Invested</p>
+          <p className="text-sm font-semibold text-gold-900">
+            {formatSGD(totalInvested)}
+          </p>
+        </div>
+        <div>
+          <p className="text-xs text-gray-400 mb-1">Returns</p>
+          <p
+            className={`text-sm font-semibold ${
+              isPositive ? "text-green-600" : "text-red-500"
+            }`}
+          >
+            {isPositive ? "+" : ""}
+            {formatSGD(absoluteReturn)} · {formatPercent(percentReturn)}
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 const PROTECTED_ROUTES = ["/portfolio", "/purchase-success"];
+const DEMO_COOKIE = "gv_demo";
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
@@ -27,32 +28,28 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // IMPORTANT: must call getUser() to refresh the session cookie
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
+  // Demo session bypasses Supabase auth
+  const isDemoSession = request.cookies.get(DEMO_COOKIE)?.value === "1";
 
-  // Redirect unauthenticated users away from protected routes
-  const isProtected = PROTECTED_ROUTES.some((route) =>
-    pathname.startsWith(route)
-  );
-  if (!user && isProtected) {
+  const { pathname } = request.nextUrl;
+  const isProtected = PROTECTED_ROUTES.some((r) => pathname.startsWith(r));
+
+  if (!user && !isDemoSession && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth";
     return NextResponse.redirect(url);
   }
 
-  // Redirect authenticated users away from /auth
   if (user && pathname === "/auth") {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  // MUST return supabaseResponse (not a new NextResponse) to propagate
-  // the refreshed auth cookies to the browser
   return supabaseResponse;
 }
 

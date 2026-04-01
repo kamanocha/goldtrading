@@ -1,61 +1,90 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, Bell, Users, Package } from "lucide-react";
+import { PlusCircle, Bell, UserPlus, ArrowUpRight } from "lucide-react";
+
+interface ToastState {
+  visible: boolean;
+  message: string;
+}
 
 const ACTIONS = [
   {
-    label: "Buy More Gold",
-    icon: ShoppingCart,
+    label: "Buy More",
+    icon: PlusCircle,
     href: "/",
-    color: "bg-gold-100 text-gold-700",
-    ring: "ring-gold-200",
+    comingSoon: false,
   },
   {
-    label: "Set Price Alert",
+    label: "Price Alert",
     icon: Bell,
-    href: "#",
-    color: "bg-blue-50 text-blue-600",
-    ring: "ring-blue-100",
+    href: null,
+    comingSoon: true,
   },
   {
-    label: "Invite Friends",
-    icon: Users,
-    href: "#",
-    color: "bg-green-50 text-green-600",
-    ring: "ring-green-100",
+    label: "Invite",
+    icon: UserPlus,
+    href: null,
+    comingSoon: true,
   },
   {
-    label: "Withdraw Gold",
-    icon: Package,
-    href: "#",
-    color: "bg-purple-50 text-purple-600",
-    ring: "ring-purple-100",
+    label: "Withdraw",
+    icon: ArrowUpRight,
+    href: null,
+    comingSoon: true,
   },
 ] as const;
 
 export function ActionGrid() {
+  const [toast, setToast] = useState<ToastState>({ visible: false, message: "" });
+
+  const showToast = (label: string) => {
+    setToast({ visible: true, message: `${label} — coming soon` });
+    setTimeout(() => setToast({ visible: false, message: "" }), 2200);
+  };
+
   return (
-    <div className="space-y-2">
-      <h2 className="text-sm font-bold text-gold-900">Quick actions</h2>
+    <div className="space-y-3">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+        Quick actions
+      </p>
+
       <div className="grid grid-cols-4 gap-2">
-        {ACTIONS.map(({ label, icon: Icon, href, color, ring }) => (
-          <Link
-            key={label}
-            href={href}
-            className="flex flex-col items-center gap-2 rounded-xl bg-white border border-gold-100 p-3 hover:shadow-sm transition-all active:scale-95"
-          >
-            <div
-              className={`flex h-10 w-10 items-center justify-center rounded-xl ring-2 ${color} ${ring}`}
-            >
-              <Icon size={18} />
+        {ACTIONS.map(({ label, icon: Icon, href, comingSoon }) => {
+          const inner = (
+            <div className="bg-white rounded-xl p-4 flex flex-col items-center gap-2 ring-1 ring-gold-100 hover:ring-amber-200 hover:shadow-sm transition-all active:scale-95">
+              <Icon size={24} className="text-amber-600" strokeWidth={1.75} />
+              <span className="text-xs font-medium text-gray-700 text-center leading-tight">
+                {label}
+              </span>
             </div>
-            <span className="text-center text-xs font-medium text-gold-700 leading-tight">
-              {label}
-            </span>
-          </Link>
-        ))}
+          );
+
+          if (comingSoon) {
+            return (
+              <button key={label} onClick={() => showToast(label)} className="text-left">
+                {inner}
+              </button>
+            );
+          }
+
+          return (
+            <Link key={label} href={href!}>
+              {inner}
+            </Link>
+          );
+        })}
       </div>
+
+      {/* Toast */}
+      {toast.visible && (
+        <div className="fixed bottom-20 left-1/2 z-50 -translate-x-1/2 rounded-full bg-gray-800 px-4 py-2 shadow-lg">
+          <p className="text-xs font-medium text-white whitespace-nowrap">
+            {toast.message}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

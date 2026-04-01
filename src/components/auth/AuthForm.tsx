@@ -4,7 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { GoldButton } from "@/components/ui/GoldButton";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, FlaskConical } from "lucide-react";
+
+// Demo credentials — change password here to "reset" access
+const DEMO_EMAIL = "demo@goldvault.sg";
+const DEMO_PASSWORD = "demo1234";
 
 export function AuthForm() {
   const router = useRouter();
@@ -26,19 +30,14 @@ export function AuthForm() {
 
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         router.push("/");
         router.refresh();
       } else {
         const { error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        setSuccess(
-          "Account created! Check your email to verify, then sign in."
-        );
+        setSuccess("Account created! Check your email to verify, then sign in.");
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
@@ -48,21 +47,19 @@ export function AuthForm() {
     }
   };
 
+  const handleDemoLogin = () => {
+    // Set a 24-hour demo session cookie (readable by proxy.ts)
+    document.cookie = "gv_demo=1; path=/; max-age=86400; SameSite=Lax";
+    router.push("/portfolio");
+    router.refresh();
+  };
+
   return (
     <div className="w-full space-y-6">
       {/* Logo & headline */}
       <div className="text-center space-y-1">
         <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gold-600 shadow-lg">
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         </div>
@@ -72,14 +69,33 @@ export function AuthForm() {
         </p>
       </div>
 
+      {/* Demo banner */}
+      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+        <div className="flex items-start gap-2.5">
+          <FlaskConical size={15} className="shrink-0 text-amber-600 mt-0.5" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-semibold text-amber-800">Demo account</p>
+            <p className="text-xs text-amber-700 mt-0.5">
+              <span className="font-mono">{DEMO_EMAIL}</span>
+              {" / "}
+              <span className="font-mono">{DEMO_PASSWORD}</span>
+            </p>
+          </div>
+          <button
+            onClick={handleDemoLogin}
+            className="shrink-0 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 transition-colors"
+          >
+            Try Demo
+          </button>
+        </div>
+      </div>
+
       {/* Mode toggle */}
       <div className="flex rounded-xl bg-gold-100 p-1">
         <button
           onClick={() => { setMode("login"); setError(null); }}
           className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
-            mode === "login"
-              ? "bg-white text-gold-800 shadow-sm"
-              : "text-gold-600 hover:text-gold-800"
+            mode === "login" ? "bg-white text-gold-800 shadow-sm" : "text-gold-600 hover:text-gold-800"
           }`}
         >
           Sign In
@@ -87,9 +103,7 @@ export function AuthForm() {
         <button
           onClick={() => { setMode("signup"); setError(null); }}
           className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
-            mode === "signup"
-              ? "bg-white text-gold-800 shadow-sm"
-              : "text-gold-600 hover:text-gold-800"
+            mode === "signup" ? "bg-white text-gold-800 shadow-sm" : "text-gold-600 hover:text-gold-800"
           }`}
         >
           Create Account
@@ -98,11 +112,8 @@ export function AuthForm() {
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-3">
-        {/* Email */}
         <div className="space-y-1">
-          <label className="text-xs font-medium text-gold-700">
-            Email address
-          </label>
+          <label className="text-xs font-medium text-gold-700">Email address</label>
           <div className="flex items-center gap-2 rounded-xl border border-gold-200 bg-white px-3 py-3 focus-within:border-gold-400 focus-within:ring-2 focus-within:ring-gold-100 transition-all">
             <Mail size={16} className="shrink-0 text-gold-400" />
             <input
@@ -117,7 +128,6 @@ export function AuthForm() {
           </div>
         </div>
 
-        {/* Password */}
         <div className="space-y-1">
           <label className="text-xs font-medium text-gold-700">Password</label>
           <div className="flex items-center gap-2 rounded-xl border border-gold-200 bg-white px-3 py-3 focus-within:border-gold-400 focus-within:ring-2 focus-within:ring-gold-100 transition-all">
@@ -142,7 +152,6 @@ export function AuthForm() {
           </div>
         </div>
 
-        {/* Error / Success */}
         {error && (
           <div className="rounded-xl bg-red-50 border border-red-100 px-3 py-2.5">
             <p className="text-sm text-red-600">{error}</p>
@@ -154,13 +163,7 @@ export function AuthForm() {
           </div>
         )}
 
-        <GoldButton
-          type="submit"
-          fullWidth
-          size="lg"
-          loading={loading}
-          className="mt-2"
-        >
+        <GoldButton type="submit" fullWidth size="lg" loading={loading} className="mt-2">
           {mode === "login" ? "Sign In →" : "Create Account →"}
         </GoldButton>
       </form>

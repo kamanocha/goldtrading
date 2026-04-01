@@ -1,7 +1,6 @@
 "use client";
 
 import { formatSGD } from "@/lib/formatters";
-import { ShieldCheck } from "lucide-react";
 
 interface StickyBuyCTAProps {
   amount: number;
@@ -12,8 +11,7 @@ interface StickyBuyCTAProps {
 export function StickyBuyCTA({ amount, onBuy, isLoading }: StickyBuyCTAProps) {
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-gold-100 bg-white/95 backdrop-blur-md px-4 pb-safe pt-3 pb-4"
-      style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+      className="fixed bottom-16 left-0 right-0 z-50 border-t border-gold-100 bg-white/95 backdrop-blur-md px-4 pt-3 pb-3"
     >
       <div className="mx-auto" style={{ maxWidth: "430px" }}>
         <button
@@ -58,12 +56,6 @@ export function StickyBuyCTA({ amount, onBuy, isLoading }: StickyBuyCTAProps) {
           )}
         </button>
 
-        <div className="mt-2 flex items-center justify-center gap-1.5">
-          <ShieldCheck size={12} className="text-gold-500" />
-          <p className="text-center text-xs text-gold-500">
-            Live price may change at checkout · Secured by Brinks Vault
-          </p>
-        </div>
       </div>
     </div>
   );

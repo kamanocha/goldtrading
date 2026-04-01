@@ -1,70 +1,66 @@
 import { formatSGD, formatGrams, formatDate } from "@/lib/formatters";
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
 import type { Order } from "@/types";
 
 interface OrderHistoryProps {
   orders: Order[];
 }
 
-const StatusIcon = {
-  completed: <CheckCircle2 size={14} className="text-green-500" />,
-  pending:   <Clock        size={14} className="text-yellow-500" />,
-  failed:    <XCircle      size={14} className="text-red-500" />,
-};
-
 export function OrderHistory({ orders }: OrderHistoryProps) {
-  if (!orders.length) {
-    return (
-      <div className="gold-card text-center py-8">
-        <p className="text-gold-400 text-sm">No transactions yet</p>
-        <p className="text-xs text-gold-300 mt-1">
-          Buy your first gram of gold to get started!
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-2">
-      <h2 className="text-sm font-bold text-gold-900">Transaction history</h2>
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+          Recent orders
+        </p>
+        <button className="text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors">
+          View all
+        </button>
+      </div>
 
-      <div className="gold-card !p-0 overflow-hidden divide-y divide-gold-50">
-        {orders.map((order) => (
-          <div
-            key={order.id}
-            className="flex items-center justify-between px-4 py-3.5"
-          >
-            {/* Left */}
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gold-100">
-                <span className="text-base">🥇</span>
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-gold-900">
-                  Bought {formatGrams(order.grams_purchased)}
-                </p>
-                <p className="text-xs text-gold-400">
-                  {formatDate(order.created_at)} ·{" "}
-                  {formatSGD(order.gold_price_sgd)}/g
-                </p>
-              </div>
-            </div>
-
-            {/* Right */}
-            <div className="text-right">
-              <p className="text-sm font-bold text-gold-900">
-                {formatSGD(order.sgd_amount)}
-              </p>
-              <div className="flex items-center justify-end gap-1 mt-0.5">
-                {StatusIcon[order.status]}
-                <span className="text-xs capitalize text-gold-400">
-                  {order.status}
+      {orders.length === 0 ? (
+        <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
+          <p className="text-sm text-gray-400">No orders yet</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl shadow-sm divide-y divide-gray-50">
+          {orders.map((order) => (
+            <div
+              key={order.id}
+              className="flex items-center gap-3 px-4 py-3.5"
+            >
+              {/* Amber circle with grams */}
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 border border-amber-100">
+                <span className="text-xs font-bold text-amber-700">
+                  {order.grams_purchased.toFixed(1)}g
                 </span>
               </div>
+
+              {/* Details */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-800">
+                  Buy {formatGrams(order.grams_purchased)} · {formatSGD(order.sgd_amount)}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {formatDate(order.created_at)}
+                </p>
+              </div>
+
+              {/* Status */}
+              <span
+                className={`text-xs font-semibold shrink-0 ${
+                  order.status === "completed"
+                    ? "text-green-600"
+                    : order.status === "pending"
+                    ? "text-yellow-600"
+                    : "text-red-500"
+                }`}
+              >
+                {order.status === "completed" ? "Success" : order.status === "pending" ? "Pending" : "Failed"}
+              </span>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

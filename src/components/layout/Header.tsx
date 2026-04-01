@@ -12,8 +12,11 @@ export function Header() {
   const router = useRouter();
 
   const handleSignOut = async () => {
+    // Clear both real session and demo session
+    document.cookie = "gv_demo=; path=/; max-age=0";
     await signOut();
     router.push("/auth");
+    router.refresh();
   };
 
   return (
