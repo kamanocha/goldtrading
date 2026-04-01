@@ -1,4 +1,4 @@
-import { formatSGD, formatGrams } from "@/lib/formatters";
+import { formatVND, formatGrams } from "@/lib/formatters";
 
 interface InvestmentDetailsCardProps {
   sgdAmount: number;
@@ -12,8 +12,8 @@ export function InvestmentDetailsCard({
   grams,
 }: InvestmentDetailsCardProps) {
   const rows = [
-    { label: "Purchase Amount", value: formatSGD(sgdAmount) },
-    { label: "Gold Price", value: `${formatSGD(goldPrice)}/g` },
+    { label: "Purchase Amount", value: formatVND(sgdAmount) },
+    { label: "Gold Price", value: `${formatVND(goldPrice)}/g` },
     { label: "Gold Added", value: formatGrams(grams) },
   ];
 

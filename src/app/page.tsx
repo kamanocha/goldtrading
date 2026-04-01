@@ -5,8 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useGoldPrice } from "@/hooks/useGoldPrice";
 import { useConverter } from "@/hooks/useConverter";
-import { useAuth } from "@/hooks/useAuth";
-import { createClient } from "@/lib/supabase/client";
+import { addDemoOrder, updateDemoHolding } from "@/lib/demoStore";
 import { MobileContainer } from "@/components/layout/MobileContainer";
 import { Header } from "@/components/layout/Header";
 import { BuyToggle } from "@/components/buy/BuyToggle";
@@ -38,56 +37,28 @@ export default function BuyPage() {
   const router = useRouter();
   const { price: goldPrice } = useGoldPrice();
   const converter = useConverter(goldPrice);
-  const { user } = useAuth();
   const [mode, setMode] = useState<BuyMode>("lumpsum");
-  const [buying, setBuying] = useState(false);
 
-  const handleBuy = async () => {
+  const handleBuy = () => {
     if (converter.numericSgd <= 0) return;
 
-    // Require login
-    if (!user) {
-      router.push("/auth");
-      return;
-    }
+    const gramsVal = parseFloat(converter.grams) || 0;
 
-    setBuying(true);
-    try {
-      const supabase = createClient();
+    addDemoOrder({
+      id: `ord_${Date.now()}`,
+      user_id: "demo",
+      sgd_amount: converter.numericSgd,
+      gold_price_sgd: goldPrice,
+      grams_purchased: gramsVal,
+      status: "completed",
+      created_at: new Date().toISOString(),
+    });
 
-      const gramsVal = parseFloat(converter.grams) || 0;
+    updateDemoHolding(gramsVal, converter.numericSgd);
 
-      // 1. Insert order
-      const { error: orderErr } = await supabase.from("orders").insert({
-        user_id: user.id,
-        sgd_amount: converter.numericSgd,
-        gold_price_sgd: goldPrice,
-        grams_purchased: gramsVal,
-        status: "completed",
-      });
-
-      if (orderErr) throw orderErr;
-
-      // 2. Update holdings aggregate
-      await supabase.rpc("increment_holding", {
-        p_user_id: user.id,
-        p_grams: gramsVal,
-        p_sgd: converter.numericSgd,
-      });
-
-      // 3. Navigate to success screen
-      router.push(
-        `/purchase-success?amount=${converter.numericSgd}&grams=${gramsVal}&price=${goldPrice}`
-      );
-    } catch (err) {
-      console.error("Buy error:", err);
-      // Still navigate to success in demo mode if Supabase not configured
-      router.push(
-        `/purchase-success?amount=${converter.numericSgd}&grams=${converter.grams}&price=${goldPrice}`
-      );
-    } finally {
-      setBuying(false);
-    }
+    router.push(
+      `/purchase-success?amount=${converter.numericSgd}&grams=${gramsVal}&price=${goldPrice}`
+    );
   };
 
   return (
@@ -151,7 +122,7 @@ export default function BuyPage() {
       <StickyBuyCTA
         amount={converter.numericSgd}
         onBuy={handleBuy}
-        isLoading={buying}
+        isLoading={false}
       />
     </MobileContainer>
   );

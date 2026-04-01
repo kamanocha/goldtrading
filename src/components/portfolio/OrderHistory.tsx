@@ -1,11 +1,26 @@
-import { formatSGD, formatGrams, formatDate } from "@/lib/formatters";
+"use client";
+
+import { useEffect, useState } from "react";
+import { formatVND, formatGrams, formatDate } from "@/lib/formatters";
+import { getDemoOrders } from "@/lib/demoStore";
 import type { Order } from "@/types";
 
 interface OrderHistoryProps {
   orders: Order[];
+  isDemoSession?: boolean;
 }
 
-export function OrderHistory({ orders }: OrderHistoryProps) {
+export function OrderHistory({ orders: initialOrders, isDemoSession }: OrderHistoryProps) {
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
+
+  useEffect(() => {
+    if (!isDemoSession) return;
+    const demoOrders = getDemoOrders();
+    if (demoOrders.length > 0) {
+      setOrders([...demoOrders, ...initialOrders]);
+    }
+  }, [isDemoSession, initialOrders]);
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
@@ -38,7 +53,7 @@ export function OrderHistory({ orders }: OrderHistoryProps) {
               {/* Details */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-800">
-                  Buy {formatGrams(order.grams_purchased)} · {formatSGD(order.sgd_amount)}
+                  Buy {formatGrams(order.grams_purchased)} · {formatVND(order.sgd_amount)}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5">
                   {formatDate(order.created_at)}

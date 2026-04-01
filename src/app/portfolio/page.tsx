@@ -60,11 +60,12 @@ export default async function PortfolioPage() {
           totalInvested={holding.total_invested}
           currentPrice={GOLD_PRICE_VND}
           userName={isDemoSession ? "Kashish" : undefined}
+          isDemoSession={isDemoSession}
         />
 
         <ActionGrid />
 
-        <OrderHistory orders={orders} />
+        <OrderHistory orders={orders} isDemoSession={isDemoSession} />
 
         <div className="pb-24" />
       </div>

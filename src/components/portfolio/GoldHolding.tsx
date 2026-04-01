@@ -1,19 +1,37 @@
-import { formatSGD, formatPercent } from "@/lib/formatters";
+"use client";
+
+import { useEffect, useState } from "react";
+import { formatVND, formatPercent } from "@/lib/formatters";
 import { calculateReturns } from "@/lib/goldPrice";
+import { getDemoHolding } from "@/lib/demoStore";
 
 interface GoldHoldingProps {
   grams: number;
   totalInvested: number;
   currentPrice: number;
   userName?: string;
+  isDemoSession?: boolean;
 }
 
 export function GoldHolding({
-  grams,
-  totalInvested,
+  grams: initialGrams,
+  totalInvested: initialInvested,
   currentPrice,
   userName,
+  isDemoSession,
 }: GoldHoldingProps) {
+  const [grams, setGrams] = useState(initialGrams);
+  const [totalInvested, setTotalInvested] = useState(initialInvested);
+
+  useEffect(() => {
+    if (!isDemoSession) return;
+    const stored = getDemoHolding();
+    if (stored) {
+      setGrams(stored.grams);
+      setTotalInvested(stored.total_invested);
+    }
+  }, [isDemoSession]);
+
   const { currentValue, absoluteReturn, percentReturn } = calculateReturns(
     grams,
     totalInvested,
@@ -38,7 +56,7 @@ export function GoldHolding({
           <span className="text-2xl font-semibold text-gold-600 ml-1">g</span>
         </p>
         <p className="text-sm text-gray-500 mt-1">
-          Value: {formatSGD(currentValue)}
+          Value: {formatVND(currentValue)}
         </p>
       </div>
 
@@ -50,7 +68,7 @@ export function GoldHolding({
         <div>
           <p className="text-xs text-gray-400 mb-1">Invested</p>
           <p className="text-sm font-semibold text-gold-900">
-            {formatSGD(totalInvested)}
+            {formatVND(totalInvested)}
           </p>
         </div>
         <div>
@@ -61,7 +79,7 @@ export function GoldHolding({
             }`}
           >
             {isPositive ? "+" : ""}
-            {formatSGD(absoluteReturn)} · {formatPercent(percentReturn)}
+            {formatVND(absoluteReturn)} · {formatPercent(percentReturn)}
           </p>
         </div>
       </div>
