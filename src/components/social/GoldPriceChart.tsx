@@ -10,11 +10,11 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { MOCK_HISTORICAL_PRICES, GOLD_PRICE_SGD } from "@/constants";
+import { MOCK_HISTORICAL_PRICES, GOLD_PRICE_VND } from "@/constants";
 import { TrendingUp } from "lucide-react";
 
 const startPrice = MOCK_HISTORICAL_PRICES[0].price;
-const endPrice = GOLD_PRICE_SGD;
+const endPrice = GOLD_PRICE_VND;
 const gain = endPrice - startPrice;
 const gainPct = ((gain / startPrice) * 100).toFixed(1);
 
@@ -33,7 +33,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
     return (
       <div className="rounded-xl border border-gold-100 bg-white px-3 py-2 shadow-lg text-xs">
         <p className="font-medium text-gold-600">{label}</p>
-        <p className="font-bold text-gold-900">S${payload[0].value?.toFixed(2)}/g</p>
+        <p className="font-bold text-gold-900">₫{payload[0].value?.toLocaleString("en-US")}/g</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function GoldPriceChart() {
         <div>
           <p className="text-xs font-medium text-gold-500">Gold price 12M</p>
           <p className="text-2xl font-bold text-gold-900">
-            S${endPrice.toFixed(2)}
+            ₫{endPrice.toLocaleString("en-US")}
             <span className="text-sm text-gold-500 font-normal">/g</span>
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function GoldPriceChart() {
               tick={{ fontSize: 10, fill: "#B45309" }}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(v) => `${v}`}
+              tickFormatter={(v) => `${(v / 1_000_000).toFixed(1)}M`}
               width={36}
             />
             <Tooltip content={<CustomTooltip />} />
@@ -112,7 +112,7 @@ export default function GoldPriceChart() {
       </div>
 
       <p className="text-xs text-gold-400 text-center">
-        Historical SGD/g · For illustrative purposes
+        Historical ₫/g · For illustrative purposes
       </p>
     </div>
   );

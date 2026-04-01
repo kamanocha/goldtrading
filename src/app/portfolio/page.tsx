@@ -6,7 +6,7 @@ import { TrustBanner } from "@/components/portfolio/TrustBanner";
 import { GoldHolding } from "@/components/portfolio/GoldHolding";
 import { ActionGrid } from "@/components/portfolio/ActionGrid";
 import { OrderHistory } from "@/components/portfolio/OrderHistory";
-import { GOLD_PRICE_SGD, MOCK_HOLDING, MOCK_ORDERS } from "@/constants";
+import { GOLD_PRICE_VND, MOCK_HOLDING, MOCK_ORDERS } from "@/constants";
 import type { Order } from "@/types";
 
 export const metadata = {
@@ -58,8 +58,8 @@ export default async function PortfolioPage() {
         <GoldHolding
           grams={holding.grams}
           totalInvested={holding.total_invested}
-          currentPrice={GOLD_PRICE_SGD}
-          userName={isDemoSession ? "Demo" : undefined}
+          currentPrice={GOLD_PRICE_VND}
+          userName={isDemoSession ? "Kashish" : undefined}
         />
 
         <ActionGrid />

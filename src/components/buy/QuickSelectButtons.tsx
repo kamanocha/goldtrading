@@ -27,7 +27,7 @@ export function QuickSelectButtons({
                   : "border-gold-200 bg-white text-gold-700 hover:border-gold-400 hover:bg-gold-50"
               }`}
             >
-              S${amount >= 1000 ? `${amount / 1000}k` : amount}
+              ₫{amount >= 1_000_000 ? `${amount / 1_000_000}M` : amount >= 1_000 ? `${amount / 1_000}K` : amount}
             </button>
           );
         })}

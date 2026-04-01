@@ -21,7 +21,7 @@ export function LivePriceBadge({ price, isLive }: LivePriceBadgeProps) {
       </span>
 
       <span className="text-xs font-semibold text-gold-800">
-        S${price.toFixed(2)}/g
+        ₫{price.toLocaleString("en-US")}/g
       </span>
 
       {isLive && (

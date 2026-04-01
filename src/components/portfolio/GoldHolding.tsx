@@ -26,9 +26,9 @@ export function GoldHolding({
       {/* Greeting */}
       <div>
         <p className="text-lg font-semibold text-gold-900">
-          Hello{userName ? ` ${userName}` : ""} 👋
+          Hello {userName ?? "there"} 👋
         </p>
-        <p className="text-sm text-gray-500 mt-0.5">Your gold in vault</p>
+        <p className="text-sm text-gray-500 mt-0.5">{userName ? "Demo account" : "Your gold in vault"}</p>
       </div>
 
       {/* Big gram number */}

@@ -1,15 +1,16 @@
 /**
- * Format a number as Singapore Dollar currency.
- * e.g. 1234.5 → "S$1,234.50"
+ * Format a number as Vietnamese Dong currency.
+ * e.g. 4860000 → "₫4,860,000"
  */
-export function formatSGD(amount: number): string {
-  return new Intl.NumberFormat("en-SG", {
-    style: "currency",
-    currency: "SGD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount);
+export function formatVND(amount: number): string {
+  return "₫" + new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(Math.round(amount));
 }
+
+/** @deprecated use formatVND */
+export const formatSGD = formatVND;
 
 /**
  * Format grams with 4 decimal places.
@@ -33,7 +34,7 @@ export function formatPercent(pct: number): string {
  * e.g. 247839 → "247,839"
  */
 export function formatNumber(n: number): string {
-  return new Intl.NumberFormat("en-SG").format(n);
+  return new Intl.NumberFormat("en-US").format(n);
 }
 
 /**
@@ -41,7 +42,7 @@ export function formatNumber(n: number): string {
  * e.g. "2026-01-15T10:30:00Z" → "15 Jan 2026"
  */
 export function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-SG", {
+  return new Date(dateStr).toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
     year: "numeric",

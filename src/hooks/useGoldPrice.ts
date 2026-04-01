@@ -1,17 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GOLD_PRICE_SGD } from "@/constants";
+import { GOLD_PRICE_VND } from "@/constants";
 
 export function useGoldPrice() {
-  const [price, setPrice] = useState(GOLD_PRICE_SGD);
+  const [price, setPrice] = useState(GOLD_PRICE_VND);
   const [isLive] = useState(true);
 
   // Phase 1: simulate a live feed with tiny price jitter every 30s
   useEffect(() => {
     const interval = setInterval(() => {
-      const jitter = (Math.random() - 0.5) * 0.06; // ± ~3 cents
-      setPrice((prev) => parseFloat((prev + jitter).toFixed(4)));
+      const jitter = Math.round((Math.random() - 0.5) * 1_000); // ±₫500
+      setPrice((prev) => prev + jitter);
     }, 30_000);
 
     return () => clearInterval(interval);
