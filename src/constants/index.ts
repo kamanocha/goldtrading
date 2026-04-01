@@ -52,7 +52,7 @@ export const EDUCATION_CARDS = [
     title: "Gold Prices & Trends",
     icon: "BarChart2",
     description:
-      "Gold has delivered ~8% annualised returns over 20 years. Ideal as an inflation hedge and portfolio diversifier.",
+      "Gold has delivered ~21.1% annualised returns over the past 5 years in VND. Ideal as an inflation hedge and portfolio diversifier.",
     slug: "trends",
   },
 ] as const;

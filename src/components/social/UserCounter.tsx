@@ -59,9 +59,9 @@ export function UserCounter() {
       {/* Stats row */}
       <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/20 pt-4">
         {[
-          { label: "Avg. return / year", value: "+8.4%" },
+          { label: "Avg. return / year", value: "+21.1%" },
           { label: "Total gold sold (kg)", value: "8,241" },
-          { label: "Uptime", value: "99.9%" },
+          { label: "Vaulted gold purity", value: "99.9%" },
         ].map(({ label, value }) => (
           <div key={label} className="text-center">
             <p className="text-base font-bold text-white">{value}</p>

@@ -31,11 +31,8 @@ const colorMap = [
 export function EducationCards() {
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-base font-bold text-gold-900">Learn about gold</h2>
-        <button className="text-xs font-medium text-gold-600 hover:text-gold-800 transition-colors">
-          View all
-        </button>
+      <div className="flex items-center">
+        <h2 className="text-base font-bold text-gold-900">Why buy gold with PayYou?</h2>
       </div>
 
       <div className="space-y-2.5">
