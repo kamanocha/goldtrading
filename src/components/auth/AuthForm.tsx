@@ -74,11 +74,8 @@ export function AuthForm() {
         <div className="flex items-start gap-2.5">
           <FlaskConical size={15} className="shrink-0 text-amber-600 mt-0.5" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-amber-800">Demo account</p>
-            <p className="text-xs text-amber-700 mt-0.5">
-              <span className="font-mono">{DEMO_EMAIL}</span>
-              {" / "}
-              <span className="font-mono">{DEMO_PASSWORD}</span>
+            <p className="text-xs text-amber-700">
+              Sign in auth feature not built yet, click &ldquo;Try Demo&rdquo; for the signed in experience
             </p>
           </div>
           <button
@@ -111,16 +108,15 @@ export function AuthForm() {
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={mode === "login" ? (e) => { e.preventDefault(); handleDemoLogin(); } : handleSubmit} className="space-y-3">
         <div className="space-y-1">
           <label className="text-xs font-medium text-gold-700">Email address</label>
           <div className="flex items-center gap-2 rounded-xl border border-gold-200 bg-white px-3 py-3 focus-within:border-gold-400 focus-within:ring-2 focus-within:ring-gold-100 transition-all">
             <Mail size={16} className="shrink-0 text-gold-400" />
             <input
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
               placeholder="you@example.com"
               className="flex-1 bg-transparent text-sm text-gold-900 placeholder-gold-300 outline-none"
               autoComplete="email"
@@ -136,9 +132,7 @@ export function AuthForm() {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              placeholder="Min. 6 characters"
+              placeholder="Password"
               className="flex-1 bg-transparent text-sm text-gold-900 placeholder-gold-300 outline-none"
               autoComplete={mode === "login" ? "current-password" : "new-password"}
             />
@@ -164,7 +158,7 @@ export function AuthForm() {
         )}
 
         <GoldButton type="submit" fullWidth size="lg" loading={loading} className="mt-2">
-          {mode === "login" ? "Sign In →" : "Create Account →"}
+          {mode === "login" ? "Sign in → (into demo account)" : "Create Account →"}
         </GoldButton>
       </form>
 
