@@ -9,6 +9,8 @@ import { OrderHistory } from "@/components/portfolio/OrderHistory";
 import { GOLD_PRICE_VND, MOCK_HOLDING, MOCK_ORDERS } from "@/constants";
 import type { Order } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Portfolio — PayYou Gold",
 };
