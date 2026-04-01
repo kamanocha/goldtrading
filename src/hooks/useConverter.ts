@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { sgdToGrams, gramsToSgd } from "@/lib/goldPrice";
 import { SLIDER_MAX } from "@/constants";
 
-const DEFAULT_SGD = 1000;
+const DEFAULT_SGD = 1000; // ₫1,000 — displayed as "1" in the thousands input
 
 export function useConverter(pricePerGram: number) {
   const [sgdAmount, setSgdAmount] = useState<string>(DEFAULT_SGD.toString());

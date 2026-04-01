@@ -16,20 +16,16 @@ export const FAQ_DATA = [
     a: "Yes — every gram you buy is backed by physical 24K gold held in a certified vault in Vietnam. You own a direct allocation, not a fund unit.",
   },
   {
-    q: "How is the gold price calculated?",
-    a: "We use live international spot prices (XAU/USD) converted to VND at the mid-market rate, updated every 30 seconds during trading hours.",
-  },
-  {
     q: "Can I withdraw physical gold?",
     a: "Yes, in multiples of 1g. Delivery is available nationwide. A small delivery fee applies for orders under 10g.",
   },
   {
     q: "What are the fees?",
-    a: "Zero storage fees during Phase 1. A 0.5% spread is built into the buy/sell price — no hidden charges.",
+    a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   },
   {
-    q: "Is GoldVault SG regulated?",
-    a: "We operate in compliance with State Bank of Vietnam guidelines for digital payment token services and precious metals trading.",
+    q: "Is PayYou Gold regulated?",
+    a: "Yes. Vietnam's Decree 232 (Oct 2025) explicitly authorises our product category. Bank-X holds a gold trading licence under Decree 232 and acts as custodian and counterparty.",
   },
   {
     q: "How do I sell my gold?",
@@ -111,5 +107,4 @@ export const MOCK_ORDERS = [
 export const VALID_PROMO_CODES: Record<string, string> = {
   GOLD10: "10% bonus gold on first purchase",
   SAVE5: "₫100,000 off your purchase",
-  VAULT20: "20% off storage for 6 months",
 };

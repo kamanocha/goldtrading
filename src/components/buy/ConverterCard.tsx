@@ -34,15 +34,15 @@ export function ConverterCard({ converter, goldPrice }: ConverterCardProps) {
               type="number"
               inputMode="decimal"
               min={0}
-              max={sliderMax}
-              value={sgdAmount}
-              onChange={(e) => handleSgdChange(e.target.value)}
-              placeholder="0"
+              max={sliderMax / 1000}
+              value={parseFloat(sgdAmount) > 0 ? parseFloat(sgdAmount) / 1000 : ""}
+              onChange={(e) => handleSgdChange((parseFloat(e.target.value) * 1000).toString())}
+              placeholder="1"
               className="gold-input"
-              aria-label="Amount in VND"
+              aria-label="Amount in thousands of VND"
             />
           </div>
-          <p className="mt-1 text-xs text-gold-400">Vietnamese Dong</p>
+          <p className="mt-1 text-xs text-gold-400">VND (thousands)</p>
         </div>
 
         {/* Swap icon */}
@@ -96,7 +96,7 @@ export function ConverterCard({ converter, goldPrice }: ConverterCardProps) {
         <p className="text-xs text-gold-600">
           <span className="font-semibold">₫{goldPrice.toLocaleString("en-US")}/g</span>
           {" · "}
-          Live price · 24K 999.9 purity
+          Live price · 24K 99.9 purity
         </p>
       </div>
     </div>

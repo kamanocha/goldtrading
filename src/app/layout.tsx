@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GoldVault SG — Save in Gold",
+  title: "PayYou Gold — Save in Gold",
   description:
-    "Buy and sell 24K digital gold in Singapore dollars. Secure, instant, and fully backed by physical gold.",
-  keywords: ["gold", "investment", "Singapore", "SGD", "digital gold"],
+    "Buy and sell 24K digital gold in Vietnamese Dong. Secure, instant, and fully backed by physical gold.",
+  keywords: ["gold", "investment", "Vietnam", "VND", "digital gold"],
 };
 
 export const viewport: Viewport = {

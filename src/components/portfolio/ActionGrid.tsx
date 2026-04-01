@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { PlusCircle, Bell, UserPlus, ArrowUpRight } from "lucide-react";
+import { PlusCircle, Bell, TrendingDown, Package } from "lucide-react";
 
 interface ToastState {
   visible: boolean;
@@ -23,14 +23,14 @@ const ACTIONS = [
     comingSoon: true,
   },
   {
-    label: "Invite",
-    icon: UserPlus,
+    label: "Sell Gold",
+    icon: TrendingDown,
     href: null,
-    comingSoon: true,
+    comingSoon: false,
   },
   {
-    label: "Withdraw",
-    icon: ArrowUpRight,
+    label: "Physical Gold",
+    icon: Package,
     href: null,
     comingSoon: true,
   },
@@ -53,7 +53,7 @@ export function ActionGrid() {
       <div className="grid grid-cols-4 gap-2">
         {ACTIONS.map(({ label, icon: Icon, href, comingSoon }) => {
           const inner = (
-            <div className="bg-white rounded-xl p-4 flex flex-col items-center gap-2 ring-1 ring-gold-100 hover:ring-amber-200 hover:shadow-sm transition-all active:scale-95">
+            <div className="h-full bg-white rounded-xl p-4 flex flex-col items-center justify-center gap-2 ring-1 ring-gold-100 hover:ring-amber-200 hover:shadow-sm transition-all active:scale-95">
               <Icon size={24} className="text-amber-600" strokeWidth={1.75} />
               <span className="text-xs font-medium text-gray-700 text-center leading-tight">
                 {label}
@@ -63,16 +63,24 @@ export function ActionGrid() {
 
           if (comingSoon) {
             return (
-              <button key={label} onClick={() => showToast(label)} className="text-left">
+              <button key={label} onClick={() => showToast(label)} className="text-left h-full w-full">
                 {inner}
               </button>
             );
           }
 
+          if (href) {
+            return (
+              <Link key={label} href={href} className="h-full">
+                {inner}
+              </Link>
+            );
+          }
+
           return (
-            <Link key={label} href={href!}>
+            <button key={label} className="text-left h-full w-full">
               {inner}
-            </Link>
+            </button>
           );
         })}
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { formatSGD } from "@/lib/formatters";
+import { formatVND } from "@/lib/formatters";
 
 interface StickyBuyCTAProps {
   amount: number;
@@ -51,7 +51,7 @@ export function StickyBuyCTA({ amount, onBuy, isLoading }: StickyBuyCTAProps) {
             <span>
               Buy Gold for{" "}
               <span className="underline decoration-dotted">
-                {amount > 0 ? formatSGD(amount) : "S$0.00"}
+                {amount > 0 ? formatVND(amount) : "₫0"}
               </span>
             </span>
           )}

@@ -16,7 +16,7 @@ export function TermsLink() {
         Privacy Policy
       </a>
       . Gold prices fluctuate. Past performance is not indicative of future
-      results. GoldVault SG is not a licensed financial adviser.
+      results. PayYou Gold by Bank-X is not a licensed financial adviser.
     </p>
   );
 }

@@ -7,7 +7,7 @@ import { GoldButton } from "@/components/ui/GoldButton";
 import { Mail, Lock, Eye, EyeOff, FlaskConical } from "lucide-react";
 
 // Demo credentials — change password here to "reset" access
-const DEMO_EMAIL = "demo@goldvault.sg";
+const DEMO_EMAIL = "demo@payyougold.vn";
 const DEMO_PASSWORD = "demo1234";
 
 export function AuthForm() {
@@ -63,7 +63,7 @@ export function AuthForm() {
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-gold-900">GoldVault SG</h1>
+        <h1 className="text-2xl font-bold text-gold-900">PayYou Gold</h1>
         <p className="text-sm text-gold-600">
           {mode === "login" ? "Welcome back 👋" : "Start saving in gold today"}
         </p>

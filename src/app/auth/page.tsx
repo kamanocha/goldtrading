@@ -1,7 +1,7 @@
 import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata = {
-  title: "Sign In — GoldVault SG",
+  title: "Sign In — PayYou Gold",
 };
 
 export default function AuthPage() {

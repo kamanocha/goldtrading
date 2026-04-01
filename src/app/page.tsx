@@ -101,13 +101,14 @@ export default function BuyPage() {
         {/* Save Daily notice */}
         {mode === "daily" && (
           <div className="rounded-xl border border-gold-200 bg-gold-100 px-4 py-3">
-            <p className="text-sm font-semibold text-gold-800">
-              📅 Daily savings mode
-            </p>
-            <p className="text-xs text-gold-600 mt-0.5">
-              We&apos;ll automatically buy gold every day at the live price.
-              Cancel anytime.
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-gold-800">
+                📅 Daily savings mode
+              </p>
+              <span className="rounded-full bg-gold-200 px-2 py-0.5 text-xs font-semibold text-gold-700">
+                Coming soon
+              </span>
+            </div>
           </div>
         )}
 
@@ -128,7 +129,7 @@ export default function BuyPage() {
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px flex-1 bg-gold-200" />
             <span className="text-xs font-semibold text-gold-500 uppercase tracking-wider">
-              Why GoldVault
+              Why PayYou Gold
             </span>
             <div className="h-px flex-1 bg-gold-200" />
           </div>

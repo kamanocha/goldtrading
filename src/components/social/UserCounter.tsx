@@ -30,7 +30,7 @@ function AnimatedNumber({ target }: { target: number }) {
 
   return (
     <span ref={ref} className="tabular-nums">
-      {count.toLocaleString("en-SG")}
+      {count.toLocaleString("en-US")}
     </span>
   );
 }
@@ -41,7 +41,7 @@ export function UserCounter() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs font-medium text-gold-200 mb-1">
-            Trusted by investors across Singapore
+            Trusted by investors across Vietnam
           </p>
           <p className="text-3xl font-bold tracking-tight">
             <AnimatedNumber target={USER_COUNT_DISPLAY} />
@@ -59,8 +59,8 @@ export function UserCounter() {
       {/* Stats row */}
       <div className="mt-4 grid grid-cols-3 gap-3 border-t border-white/20 pt-4">
         {[
-          { label: "Avg. return", value: "+12.4%" },
-          { label: "Total gold (kg)", value: "8,241" },
+          { label: "Avg. return / year", value: "+8.4%" },
+          { label: "Total gold sold (kg)", value: "8,241" },
           { label: "Uptime", value: "99.9%" },
         ].map(({ label, value }) => (
           <div key={label} className="text-center">

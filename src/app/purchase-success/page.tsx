@@ -52,7 +52,7 @@ function PurchaseSuccessContent() {
         </div>
 
         <p className="text-xs text-gold-400">
-          Your gold is securely stored in our Brinks vault. You can check your
+          Your gold is securely stored in our certified vault. You can check your
           balance anytime in the Portfolio tab.
         </p>
       </div>

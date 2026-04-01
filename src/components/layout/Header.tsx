@@ -21,31 +21,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-gold-50/90 backdrop-blur-md border-b border-gold-100 px-4 py-3">
-      <div className="flex items-center justify-between gap-2">
+      <div className="mx-auto flex items-center justify-between gap-2" style={{ maxWidth: "430px" }}>
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-600 shadow-sm group-hover:bg-gold-700 transition-colors">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-            </svg>
-          </div>
-          <div>
-            <span className="text-base font-bold text-gold-900 leading-none">
-              GoldVault
-            </span>
-            <span className="ml-0.5 text-base font-bold text-gold-600 leading-none">
-              SG
-            </span>
-          </div>
+        <Link href="/" className="flex items-center h-8 group">
+          <span className="text-base font-bold text-gold-900 leading-none whitespace-nowrap">PayYou Gold</span>
         </Link>
 
         {/* Right side */}

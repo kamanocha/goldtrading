@@ -10,7 +10,7 @@ import { GOLD_PRICE_VND, MOCK_HOLDING, MOCK_ORDERS } from "@/constants";
 import type { Order } from "@/types";
 
 export const metadata = {
-  title: "Portfolio — GoldVault SG",
+  title: "Portfolio — PayYou Gold",
 };
 
 export default async function PortfolioPage() {
