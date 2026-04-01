@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { MobileContainer } from "@/components/layout/MobileContainer";
@@ -23,8 +22,6 @@ export default async function PortfolioPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  if (!user && !isDemoSession) redirect("/auth");
 
   let holding = MOCK_HOLDING;
   let orders: Order[] = MOCK_ORDERS as Order[];

@@ -28,28 +28,6 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Demo session bypasses Supabase auth
-  const isDemoSession = request.cookies.get(DEMO_COOKIE)?.value === "1";
-
-  const { pathname } = request.nextUrl;
-  const isProtected = PROTECTED_ROUTES.some((r) => pathname.startsWith(r));
-
-  if (!user && !isDemoSession && isProtected) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth";
-    return NextResponse.redirect(url);
-  }
-
-  if (user && pathname === "/auth") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
-
   return supabaseResponse;
 }
 
