@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { BottomNav } from "@/components/layout/BottomNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,14 +16,25 @@ export const metadata: Metadata = {
   keywords: ["gold", "investment", "Singapore", "SGD", "digital gold"],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full`}>
-      <body className="min-h-full antialiased">{children}</body>
+    <html lang="en" className={inter.variable}>
+      <body className="antialiased" style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        <div className="flex-1 overflow-y-auto overscroll-none">
+          {children}
+        </div>
+        <BottomNav />
+      </body>
     </html>
   );
 }

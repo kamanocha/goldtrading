@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ConfettiCanvas } from "@/components/success/ConfettiCanvas";
 import { InvestmentDetailsCard } from "@/components/success/InvestmentDetailsCard";
 import { GoldButton } from "@/components/ui/GoldButton";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { CheckCircle2 } from "lucide-react";
 
 function PurchaseSuccessContent() {
@@ -58,7 +57,6 @@ function PurchaseSuccessContent() {
         </p>
       </div>
 
-      <BottomNav />
     </div>
   );
 }

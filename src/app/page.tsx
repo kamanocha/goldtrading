@@ -9,7 +9,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { createClient } from "@/lib/supabase/client";
 import { MobileContainer } from "@/components/layout/MobileContainer";
 import { Header } from "@/components/layout/Header";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { BuyToggle } from "@/components/buy/BuyToggle";
 import { ConverterCard } from "@/components/buy/ConverterCard";
 import { QuickSelectButtons } from "@/components/buy/QuickSelectButtons";
@@ -144,7 +143,7 @@ export default function BuyPage() {
         </div>
 
         {/* Spacer for sticky CTA + nav bar */}
-        <div className="h-36" />
+        <div className="h-32" />
       </div>
 
       {/* Sticky buy button (floats above BottomNav) */}
@@ -153,8 +152,6 @@ export default function BuyPage() {
         onBuy={handleBuy}
         isLoading={buying}
       />
-
-      <BottomNav />
     </MobileContainer>
   );
 }

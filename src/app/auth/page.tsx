@@ -1,5 +1,4 @@
 import { AuthForm } from "@/components/auth/AuthForm";
-import { BottomNav } from "@/components/layout/BottomNav";
 
 export const metadata = {
   title: "Sign In — GoldVault SG",
@@ -11,7 +10,6 @@ export default function AuthPage() {
       <div className="w-full" style={{ maxWidth: "400px" }}>
         <AuthForm />
       </div>
-      <BottomNav />
     </div>
   );
 }

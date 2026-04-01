@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { MobileContainer } from "@/components/layout/MobileContainer";
-import { BottomNav } from "@/components/layout/BottomNav";
 import { TrustBanner } from "@/components/portfolio/TrustBanner";
 import { GoldHolding } from "@/components/portfolio/GoldHolding";
 import { ActionGrid } from "@/components/portfolio/ActionGrid";
@@ -70,7 +69,6 @@ export default async function PortfolioPage() {
         <div className="pb-24" />
       </div>
 
-      <BottomNav />
     </MobileContainer>
   );
 }

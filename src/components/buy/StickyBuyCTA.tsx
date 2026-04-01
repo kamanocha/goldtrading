@@ -11,7 +11,8 @@ interface StickyBuyCTAProps {
 export function StickyBuyCTA({ amount, onBuy, isLoading }: StickyBuyCTAProps) {
   return (
     <div
-      className="fixed bottom-16 left-0 right-0 z-50 border-t border-gold-100 bg-white/95 backdrop-blur-md px-4 pt-3 pb-3"
+      className="fixed left-0 right-0 z-50 border-t border-amber-200 bg-amber-50 px-4 pt-3 pb-3"
+      style={{ bottom: "calc(56px + env(safe-area-inset-bottom, 0px))" }}
     >
       <div className="mx-auto" style={{ maxWidth: "430px" }}>
         <button
